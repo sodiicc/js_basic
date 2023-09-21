@@ -1,0 +1,71 @@
+.game {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 3rem 3rem;
+}
+
+.check-hit {
+  background-color: #bff1a1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem 4rem;
+}
+
+.check-hit > label {
+  padding: 1rem;
+}
+
+.hero, .enemy {
+  height: 350px;
+  width: 250px;
+}
+
+.hero img, .enemy img {
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.hero-card, .enemy-card {
+  height: 100%;
+  width: 100%;
+  /* display: flex; */
+}
+
+.hero-hp, .enemy-hp {
+  position: relative;
+  width: 15px;
+  height: 30px;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  line-height: 2;
+  border: 1px black solid;
+  display: flex;
+}
+
+.enemy-hp {
+  justify-content: end;
+}
+
+.enemy-hp .hp {
+  background-color: #f12a2a;
+  height: 100%;
+  width: 75%;
+}
+
+.hero-hp .hp {
+  background-color: #f12a2a;
+  height: 100%;
+  width: 75%;
+}
+
+.hp-lvl  {
+  position: absolute;
+}
+
+header, footer {
+  background-color: #444;
+  height: 80px;
+}
