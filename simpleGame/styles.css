@@ -17,25 +17,22 @@
 }
 
 .hero, .enemy {
-  height: 350px;
   width: 250px;
 }
 
 .hero img, .enemy img {
   object-fit: cover;
-  height: 100%;
+  height: 350px;
   width: 100%;
+  border: 1px solid black;
 }
 
 .hero-card, .enemy-card {
-  height: 100%;
   width: 100%;
-  /* display: flex; */
 }
 
 .hero-hp, .enemy-hp {
   position: relative;
-  width: 15px;
   height: 30px;
   width: 100%;
   font-weight: bold;
@@ -52,20 +49,34 @@
 .enemy-hp .hp {
   background-color: #f12a2a;
   height: 100%;
-  width: 75%;
+  width: 100%;
 }
 
 .hero-hp .hp {
   background-color: #f12a2a;
   height: 100%;
-  width: 75%;
+  width: 100%;
 }
 
 .hp-lvl  {
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.btn-hit {
+  padding: 0.5rem 1rem;
+  background-color: #700606;
+  color: aliceblue;
+  border-radius: 5px;
 }
 
 header, footer {
   background-color: #444;
   height: 80px;
+  color: #bff1a1;
+  font-size: 36px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -4,16 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="reset.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>Simple Game</header>
+  <header><h1>Simple Game</h1></header>
   <div class="game">
     <div class="hero">
       <div class="hero-card">
         <img src="https://liquipedia.net/commons/images/3/35/League_Infobox_Garen.jpg" alt="hero img" />
-        <div class="hero-hp">100</div>
+        <div class="hero-hp"><span class="hp-lvl">200</span><div class="hp"></div></div>
       </div>
     </div>
     <div class="check-hit">
@@ -26,6 +26,7 @@
       <label for="legs">Legs hit
         <input name="hit-name" id="legs" type="radio">
       </label>
+      <button class="btn-hit">Enemy Hit</button>
     </div>
     <div class="enemy">
       <div class="enemy-card">
@@ -34,7 +35,7 @@
       </div>
     </div>
   </div>
-  <footer>Copyright</footer>
+  <footer><h1>Copyright</h1></footer>
   
   <script src="script.js"></script>
 </body>
