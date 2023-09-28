@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,13 +8,19 @@
   <link rel="stylesheet" href="reset.css">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-  <header><h1>Simple Game</h1></header>
+  <header>
+    <h1>Simple Game</h1>
+  </header>
   <div class="game">
     <div class="hero">
       <div class="hero-card">
         <img src="https://liquipedia.net/commons/images/3/35/League_Infobox_Garen.jpg" alt="hero img" />
-        <div class="hero-hp"><span class="hp-lvl">200</span><div class="hp"></div></div>
+        <div class="hero-hp"><span class="hp-lvl">200</span>
+          <div class="hp"></div>
+        </div>
+        <div class="stats"></div>
       </div>
     </div>
     <div class="check-hit">
@@ -29,14 +36,39 @@
       <button class="btn-hit">Enemy Hit</button>
     </div>
     <div class="enemy">
-      <div class="enemy-card">
+      <div class="enemy-card none">
         <img src="https://liquipedia.net/commons/images/3/35/League_Infobox_Garen.jpg" alt="enemy img">
-        <div class="enemy-hp"><span class="hp-lvl">100</span><div class="hp"></div></div>
+        <div class="enemy-hp"><span class="hp-lvl">100</span>
+          <div class="hp"></div>
+        </div>
+        <div class="stats"></div>
       </div>
+      <div class="no-chosen-enemy">Chose your enemy please !</div>
     </div>
   </div>
-  <footer><h1>Copyright</h1></footer>
-  
+  <div class="chose-enemy">
+    <div id="easy">
+      <img src="https://liquipedia.net/commons/images/3/35/League_Infobox_Garen.jpg" alt="enemy img">
+      <div>Easy</div>
+    </div>
+    <div id="normal">
+      <img src="https://liquipedia.net/commons/images/3/35/League_Infobox_Garen.jpg" alt="enemy img">
+      <div>Normal</div>
+    </div>
+    <div id="hard">
+      <img src="https://liquipedia.net/commons/images/3/35/League_Infobox_Garen.jpg" alt="enemy img">
+      <div>Hard</div>
+    </div>
+    <div id="hell">
+      <img src="https://liquipedia.net/commons/images/3/35/League_Infobox_Garen.jpg" alt="enemy img">
+      <div>Hell</div>
+    </div>
+  </div>
+  <footer>
+    <h1>Copyright</h1>
+  </footer>
+
   <script src="script.js"></script>
 </body>
+
 </html>

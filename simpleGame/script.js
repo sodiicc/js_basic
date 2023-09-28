@@ -4,6 +4,7 @@ const heroHpLvl = document.querySelector('.hero-hp .hp-lvl')
 const enemyHp = document.querySelector('.enemy-hp .hp')
 const enemyHpLvl = document.querySelector('.enemy-hp .hp-lvl')
 
+
 class Character {
   constructor({ maxHp, hp, name, str, agil, acc }) {
     this.maxHp = maxHp
@@ -28,7 +29,7 @@ class Character {
     this.hp = newHp
   }
 }
-// const selectedHeroHp = Number(prompt('Set your HP'))
+
 const heroObj = {
   maxHp: 140,
   hp: 140,
@@ -38,14 +39,45 @@ const heroObj = {
   acc: 10
 }
 
-// const enemyObj = {
-//   maxHp: 120,
-//   hp: 120,
-//   name: 'Fiddle',
-//   str: 9,
-//   agil: 9,
-//   acc: 9
-// }
+const dificultiesList = [
+  {
+    id: 'easy',
+    value: 1
+  },
+  {
+    id: 'normal',
+    value: 2
+  },
+  {
+    id: 'hard',
+    value: 3
+  },
+  {
+    id: 'hell',
+    value: 4
+  },
+]
+
+dificultiesList.forEach(diffItem => {
+  const item = document.getElementById(diffItem.id)
+  item.addEventListener('click', () => setEnemy(diffItem.value))
+})
+
+function setEnemy(difficulty) {
+  const enemyCard = document.querySelector('.enemy-card')
+  const isEnemy = !enemyCard.classList.contains('none')
+  if (!isEnemy) {
+    const enemyChar = new Character(generateEnemy(difficulty, 'Enemy'))
+    setEnemyStats(enemyChar.getInfo())
+    toggleEnemyRender()
+  }
+}
+
+function setEnemyStats({hp, maxHp, str, agil, acc}) {
+  enemyHp.style.width = `${(hp/maxHp) * 100}%`
+  enemyHpLvl.innerText = `${hp} / ${maxHp}`
+  renderStats('enemy', {str, agil, acc})
+}  
 
 function generateEnemy(difficulty, name) { 
   let hp = 50
@@ -61,38 +93,61 @@ function generateEnemy(difficulty, name) {
     else acc += 1
   }
 
-  return {
-    hp,
-    str,
-    agil,
-    acc,
-    maxHp: hp,
-    name
+  return { hp, str, agil, acc, maxHp: hp, name }
+}
+
+function toggleEnemyRender() {
+  const enemyCard = document.querySelector('.enemy-card')
+  const choseEnemyInfo = document.querySelector('.no-chosen-enemy')
+  const isEnemy = enemyCard.classList.contains('none')
+  if(isEnemy) {
+    enemyCard.classList.remove('none')
+    choseEnemyInfo.classList.add('none')
+  } else {
+    enemyCard.classList.add('none')
+    choseEnemyInfo.classList.remove('none')
   }
 }
 
 // console.log('generateEnemy', generateEnemy(1, 'Enemy'))
 
 const heroChar = new Character(heroObj)
-const enemyChar = new Character(generateEnemy(1, 'Enemy'))
+const enemyChar = new Character(generateEnemy(0, 'Enemy'))
 
 
 function setCharacters() {
   setHeroStats()
-  setEnemyStats()
+  // setEnemyStats()
 }
 
 function setHeroStats() {
-
-  let {hp, maxHp} = heroChar.getInfo()
+  let {hp, maxHp, str, agil, acc} = heroChar.getInfo()
   heroHp.style.width = `${(hp/maxHp) * 100}%`
   heroHpLvl.innerText = `${hp} / ${maxHp}`
+  renderStats('hero', {str, agil, acc})
 }
 
-function setEnemyStats() {
-  let {hp, maxHp} = enemyChar.getInfo()
-  enemyHp.style.width = `${(hp/maxHp) * 100}%`
-  enemyHpLvl.innerText = `${hp} / ${maxHp}`
+function renderStats(charClass, charInfo) {
+  const char = document.querySelector(`.${charClass} .stats`)
+  const charStats = [
+    {
+      value: charInfo.str,
+      title: 'Strength'
+    },
+    {
+      value: charInfo.agil,
+      title: 'Agility'
+    },
+    {
+      value: charInfo.acc,
+      title: 'Accuracy'
+    },
+  ]
+  charStats.forEach(stat => {
+    const statBlock = document.createElement('div')
+    statBlock.innerText = `${stat.title}: ${stat.value}`
+    char.appendChild(statBlock)
+  })
 }
 
 setCharacters()
