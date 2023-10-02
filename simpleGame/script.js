@@ -25,18 +25,19 @@ class Character {
       acc: this.acc,
     }
   }
+
   setHp(newHp) {
     this.hp = newHp
   }
 }
 
 const heroObj = {
-  maxHp: 140,
-  hp: 140,
+  maxHp: 150,
+  hp: 150,
   name: 'Garen',
-  str: 10,
-  agil: 10,
-  acc: 10
+  str: 16,
+  agil: 16,
+  acc: 16
 }
 
 const dificultiesList = [
@@ -67,7 +68,7 @@ function setEnemy(difficulty) {
   const enemyCard = document.querySelector('.enemy-card')
   const isEnemy = !enemyCard.classList.contains('none')
   if (!isEnemy) {
-    const enemyChar = new Character(generateEnemy(difficulty, 'Enemy'))
+    enemyChar = new Character(generateEnemy(difficulty, 'Enemy'))
     setEnemyStats(enemyChar.getInfo())
     toggleEnemyRender()
   }
@@ -99,9 +100,11 @@ function generateEnemy(difficulty, name) {
 function toggleEnemyRender() {
   const enemyCard = document.querySelector('.enemy-card')
   const choseEnemyInfo = document.querySelector('.no-chosen-enemy')
+  const hitBtn = document.querySelector('.btn-hit')
   const isEnemy = enemyCard.classList.contains('none')
   if(isEnemy) {
     enemyCard.classList.remove('none')
+    hitBtn.classList.remove('none')
     choseEnemyInfo.classList.add('none')
   } else {
     enemyCard.classList.add('none')
@@ -112,7 +115,7 @@ function toggleEnemyRender() {
 // console.log('generateEnemy', generateEnemy(1, 'Enemy'))
 
 const heroChar = new Character(heroObj)
-const enemyChar = new Character(generateEnemy(0, 'Enemy'))
+let enemyChar = new Character(generateEnemy(0, 'Enemy'))
 
 
 function setCharacters() {
@@ -157,9 +160,47 @@ const btnHit = document.querySelector('.btn-hit')
 btnHit.addEventListener('click', onBtnHitClick)
 
 function onBtnHitClick() {
-  let {hp, maxHp} = heroChar.getInfo()
-  heroChar.setHp(hp - 15)
-  hp -= 15
-  heroHp.style.width = `${(hp/maxHp) * 100}%`
-  heroHpLvl.innerText = `${hp} / ${maxHp}`
+  renderDamage()
+  renderDamage(true)
+}
+
+function renderDamage(isEnemy) {
+  let heroInfo = heroChar.getInfo()
+  let enemyInfo = enemyChar.getInfo()
+
+  const char = isEnemy ? enemyChar : heroChar
+
+  const charInfo = isEnemy ? enemyInfo : heroInfo
+
+  const heroDmg = generateDmg(heroInfo, enemyInfo)
+  const enemyDmg = generateDmg(enemyInfo, heroInfo)
+
+  const dmg = isEnemy ? heroDmg : enemyDmg
+  console.log('dmg', dmg)
+  
+  char.setHp(charInfo.hp - dmg)
+  charInfo.hp -= dmg
+  const charHp = isEnemy ? enemyHp : heroHp
+  const charHpLvl = isEnemy ? enemyHpLvl : heroHpLvl
+  charHp.style.width = `${(charInfo.hp/charInfo.maxHp) * 100}%`
+  charHpLvl.innerText = `${charInfo.hp} / ${charInfo.maxHp}`
+}
+
+function getRandom(a, b) {
+  return Math.floor(a + Math.random() * (b - a + 1))
+}
+
+function generateDmg(hero, enemy) {
+  let crit = 1
+  let block = 1
+  critChance = 0.1 + hero.agil * 0.1 / enemy.agil
+  blockChance = 0.1 + + hero.acc * 0.1 / enemy.acc
+  
+  critChance = critChance > 0.8 ? 0.8 : critChance
+  blockChance = blockChance > 0.8 ? 0.8 : blockChance
+  console.log('critChance', critChance)
+  console.log('blockChance', blockChance)
+  if(Math.random() < critChance) crit = 3
+  if(Math.random() < blockChance) crit = 0
+  return getRandom(hero.str,  Math.round(hero.str * 1.5)) * crit * block
 }
