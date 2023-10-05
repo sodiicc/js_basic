@@ -175,6 +175,8 @@ function renderDamage(isEnemy) {
   const heroDmg = generateDmg(heroInfo, enemyInfo)
   const enemyDmg = generateDmg(enemyInfo, heroInfo)
 
+  renderDamageToChars(isEnemy ? heroDmg : enemyDmg, isEnemy)
+
   const dmg = isEnemy ? heroDmg : enemyDmg
   console.log('dmg', dmg)
   
@@ -203,4 +205,21 @@ function generateDmg(hero, enemy) {
   if(Math.random() < critChance) crit = 3
   if(Math.random() < blockChance) crit = 0
   return getRandom(hero.str,  Math.round(hero.str * 1.5)) * crit * block
+}
+
+function renderDamageToChars(dmg, isEnemy) {
+  // const dmgElements = document.querySelectorAll(`.${isEnemy ? 'enemy' : 'hero'}-card>.hero-dmg`)
+  // if (dmgElements.length) {
+  //   Array(...dmgElements).forEach(el => {
+  //     el.parentElement.removeChild(el)
+  //   })
+  // }
+  const parentEl = document.querySelector(`.${isEnemy ? 'enemy-card' : 'hero-card'}`)
+  const dmgEl = document.createElement('div')
+  dmgEl.classList.add('hero-dmg')
+  dmgEl.innerText = dmg
+  parentEl.appendChild(dmgEl)
+  setTimeout(() => {
+    parentEl.removeChild(dmgEl)
+  }, 3000);
 }
