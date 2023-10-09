@@ -180,8 +180,8 @@ function renderDamage(isEnemy) {
   const dmg = isEnemy ? heroDmg : enemyDmg
   console.log('dmg', dmg)
   
-  char.setHp(charInfo.hp - dmg)
-  charInfo.hp -= dmg
+  char.setHp(charInfo.hp - dmg.value)
+  charInfo.hp -= dmg.value
   const charHp = isEnemy ? enemyHp : heroHp
   const charHpLvl = isEnemy ? enemyHpLvl : heroHpLvl
   charHp.style.width = `${(charInfo.hp/charInfo.maxHp) * 100}%`
@@ -195,16 +195,23 @@ function getRandom(a, b) {
 function generateDmg(hero, enemy) {
   let crit = 1
   let block = 1
-  critChance = 0.1 + hero.agil * 0.1 / enemy.agil
+  critChance = 0.8 + hero.agil * 0.1 / enemy.agil
   blockChance = 0.1 + + hero.acc * 0.1 / enemy.acc
   
   critChance = critChance > 0.8 ? 0.8 : critChance
   blockChance = blockChance > 0.8 ? 0.8 : blockChance
   console.log('critChance', critChance)
   console.log('blockChance', blockChance)
-  if(Math.random() < critChance) crit = 3
-  if(Math.random() < blockChance) crit = 0
-  return getRandom(hero.str,  Math.round(hero.str * 1.5)) * crit * block
+  const isCrit = Math.random() < critChance
+  const isBlock = Math.random() < blockChance
+  if(isCrit) crit = 3
+  if(isBlock) block = 0
+  const result = {
+    value: getRandom(hero.str,  Math.round(hero.str * 1.5)) * crit * block,
+    isCrit,
+    isBlock
+  }
+  return result
 }
 
 function renderDamageToChars(dmg, isEnemy) {
@@ -217,7 +224,14 @@ function renderDamageToChars(dmg, isEnemy) {
   const parentEl = document.querySelector(`.${isEnemy ? 'enemy-card' : 'hero-card'}`)
   const dmgEl = document.createElement('div')
   dmgEl.classList.add('hero-dmg')
-  dmgEl.innerText = dmg
+  dmgEl.innerText = dmg.isBlock ? 'Block' : dmg.value
+  if (dmg.isCrit) {
+    dmgEl.style.fontSize = '100px'
+    dmgEl.style.textShadow = '4px 2px 0 #df0606'
+    dmgEl.style.fontWeight = 'bold'
+    dmgEl.style.color = '#fcd2d2'
+  }
+  if (dmg.isBlock) dmgEl.style.fontSize = '50px'
   parentEl.appendChild(dmgEl)
   setTimeout(() => {
     parentEl.removeChild(dmgEl)

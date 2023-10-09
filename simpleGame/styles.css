@@ -110,11 +110,11 @@
   position: absolute;
   font-size: 80px;
   color: white;
-  top: 20%;
+  top: 25%;
   left: 50%;
   transform: translateX(-50%);
   text-shadow: 4px 2px 0 black;
-  transition: 3s ;
+  animation: 3s move-top-and-hide;
 }
 
 header, footer {
@@ -127,6 +127,16 @@ header, footer {
   align-items: center;
 }
 
-@keyframes hide {
-  
+@keyframes move-top-and-hide {
+  0% {
+    opacity: 0.2;
+  }
+  25% {
+    opacity: 1;
+    top: 15%;
+  }
+  100% {
+    opacity: 0.1;
+    top: 0;
+  }
 }
