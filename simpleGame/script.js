@@ -4,6 +4,24 @@ const heroHpLvl = document.querySelector('.hero-hp .hp-lvl')
 const enemyHp = document.querySelector('.enemy-hp .hp')
 const enemyHpLvl = document.querySelector('.enemy-hp .hp-lvl')
 
+const attackerBodyParts = [
+  'Кулаком',
+  'Ногою',
+  'П`яткою',
+  'Ліктем',
+  'Лобом',
+  'Коліном'
+]
+
+const looserBodyParts = [
+  'По голові',
+  'В ніс',
+  'По сідниці',
+  'В живіт',
+  'По спині',
+  'У вухо'
+]
+
 
 class Character {
   constructor({ maxHp, hp, name, str, agil, acc }) {
@@ -74,23 +92,23 @@ function setEnemy(difficulty) {
   }
 }
 
-function setEnemyStats({hp, maxHp, str, agil, acc}) {
-  enemyHp.style.width = `${(hp/maxHp) * 100}%`
+function setEnemyStats({ hp, maxHp, str, agil, acc }) {
+  enemyHp.style.width = `${(hp / maxHp) * 100}%`
   enemyHpLvl.innerText = `${hp} / ${maxHp}`
-  renderStats('enemy', {str, agil, acc})
-}  
+  renderStats('enemy', { str, agil, acc })
+}
 
-function generateEnemy(difficulty, name) { 
+function generateEnemy(difficulty, name) {
   let hp = 50
   let str = 5
   let agil = 5
   let acc = 5
 
-  for(let i = 0; i <= 20 + (difficulty * 10); i++) {
+  for (let i = 0; i <= 20 + (difficulty * 10); i++) {
     const rand = Math.random()
-    if(rand < 0.25) hp += 10
-    else if(rand < 0.5) agil += 1
-    else if(rand < 0.75) str += 1
+    if (rand < 0.25) hp += 10
+    else if (rand < 0.5) agil += 1
+    else if (rand < 0.75) str += 1
     else acc += 1
   }
 
@@ -101,14 +119,17 @@ function toggleEnemyRender() {
   const enemyCard = document.querySelector('.enemy-card')
   const choseEnemyInfo = document.querySelector('.no-chosen-enemy')
   const hitBtn = document.querySelector('.btn-hit')
+  const choseEnemyBlock = document.querySelector('.chose-enemy')
   const isEnemy = enemyCard.classList.contains('none')
-  if(isEnemy) {
+  if (isEnemy) {
     enemyCard.classList.remove('none')
     hitBtn.classList.remove('none')
     choseEnemyInfo.classList.add('none')
+    choseEnemyBlock.classList.add('none')
   } else {
     enemyCard.classList.add('none')
     choseEnemyInfo.classList.remove('none')
+    choseEnemyBlock.classList.remove('none')
   }
 }
 
@@ -124,10 +145,10 @@ function setCharacters() {
 }
 
 function setHeroStats() {
-  let {hp, maxHp, str, agil, acc} = heroChar.getInfo()
-  heroHp.style.width = `${(hp/maxHp) * 100}%`
+  let { hp, maxHp, str, agil, acc } = heroChar.getInfo()
+  heroHp.style.width = `${(hp / maxHp) * 100}%`
   heroHpLvl.innerText = `${hp} / ${maxHp}`
-  renderStats('hero', {str, agil, acc})
+  renderStats('hero', { str, agil, acc })
 }
 
 function renderStats(charClass, charInfo) {
@@ -179,12 +200,12 @@ function renderDamage(isEnemy) {
 
   const dmg = isEnemy ? heroDmg : enemyDmg
   console.log('dmg', dmg)
-  
+
   char.setHp(charInfo.hp - dmg.value)
   charInfo.hp -= dmg.value
   const charHp = isEnemy ? enemyHp : heroHp
   const charHpLvl = isEnemy ? enemyHpLvl : heroHpLvl
-  charHp.style.width = `${(charInfo.hp/charInfo.maxHp) * 100}%`
+  charHp.style.width = `${(charInfo.hp / charInfo.maxHp) * 100}%`
   charHpLvl.innerText = `${charInfo.hp} / ${charInfo.maxHp}`
 }
 
@@ -195,19 +216,19 @@ function getRandom(a, b) {
 function generateDmg(hero, enemy) {
   let crit = 1
   let block = 1
-  critChance = 0.8 + hero.agil * 0.1 / enemy.agil
+  critChance = 0.1 + hero.agil * 0.1 / enemy.agil
   blockChance = 0.1 + + hero.acc * 0.1 / enemy.acc
-  
+
   critChance = critChance > 0.8 ? 0.8 : critChance
   blockChance = blockChance > 0.8 ? 0.8 : blockChance
   console.log('critChance', critChance)
   console.log('blockChance', blockChance)
   const isCrit = Math.random() < critChance
   const isBlock = Math.random() < blockChance
-  if(isCrit) crit = 3
-  if(isBlock) block = 0
+  if (isCrit) crit = 3
+  if (isBlock) block = 0
   const result = {
-    value: getRandom(hero.str,  Math.round(hero.str * 1.5)) * crit * block,
+    value: getRandom(hero.str, Math.round(hero.str * 1.5)) * crit * block,
     isCrit,
     isBlock
   }
@@ -215,12 +236,6 @@ function generateDmg(hero, enemy) {
 }
 
 function renderDamageToChars(dmg, isEnemy) {
-  // const dmgElements = document.querySelectorAll(`.${isEnemy ? 'enemy' : 'hero'}-card>.hero-dmg`)
-  // if (dmgElements.length) {
-  //   Array(...dmgElements).forEach(el => {
-  //     el.parentElement.removeChild(el)
-  //   })
-  // }
   const parentEl = document.querySelector(`.${isEnemy ? 'enemy-card' : 'hero-card'}`)
   const dmgEl = document.createElement('div')
   dmgEl.classList.add('hero-dmg')
@@ -233,7 +248,24 @@ function renderDamageToChars(dmg, isEnemy) {
   }
   if (dmg.isBlock) dmgEl.style.fontSize = '50px'
   parentEl.appendChild(dmgEl)
+  logGenerator(isEnemy, dmg.isBlock, dmg.isCrit, dmg.value)
   setTimeout(() => {
     parentEl.removeChild(dmgEl)
   }, 3000);
+}
+
+function logGenerator(isEnemy, isBlock, isCrit, dmg) {
+  const logEl = document.createElement('div')
+  logEl.classList.add(isEnemy ? 'enemy-log' : 'hero-log')
+  const blockText = `${isEnemy ? 'Ти' : 'Ворог'} Заблокував`
+  const commonHitText = `${isEnemy ? 'Ворог' : 'Ти'} наніс ${isCrit ? '<span class="bold">критичний<span>' : ''}`
+  const logText = `${isBlock ? blockText : commonHitText} удар
+    ${getRandomArrayElement(attackerBodyParts)} ${getRandomArrayElement(looserBodyParts)} -- ${dmg}`
+    const date = new Date().toLocaleString()
+  logEl.innerHTML = `${date}: ${logText}`
+  document.querySelector('.logs').appendChild(logEl)
+}
+
+function getRandomArrayElement(arr) {
+  return arr[Math.floor(Math.random() * arr.length)]
 }

@@ -117,6 +117,25 @@
   animation: 3s move-top-and-hide;
 }
 
+.logs {
+  background-color: #d7f3aa;
+  font-size: 24px;
+}
+
+.enemy-log {
+  color: #700606;
+  padding: 0.2rem 0.3rem;
+}
+
+.hero-log {
+  color: darkgreen;
+  padding: 0.2rem 0.3rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
 header, footer {
   background-color: #444;
   height: 80px;
