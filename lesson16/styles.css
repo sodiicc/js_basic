@@ -1,0 +1,30 @@
+.red, .green, .blue {
+  padding: 20px;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.red {
+  background-color: rgb(199, 121, 121);
+}
+
+.green {
+  background-color: rgb(77, 133, 77);
+}
+
+.blue {
+  background-color: rgb(158, 158, 238);
+}
+
+.list {
+  padding: 10px;
+}
+
+.error {
+  color: rgb(206, 33, 33);
+  border: 2px solid rgb(206, 33, 33);
+}
+
+/* h1 {
+  user-select: none;
+} */

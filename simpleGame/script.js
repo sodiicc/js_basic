@@ -32,13 +32,15 @@ logs.forEach(log => {
   logsRender(log.isEnemy, log.log)
 })
 
-// if (heroStats.hp) {
-//   renderChharStats(false, heroStats)
-// }
+if (heroStats.hp) {
+  // renderCharStats(false, heroStats)
+}
 
-// if (enemyStats.hp) {
-//   renderChharStats(true, enemyStats)
-// }
+if (enemyStats.hp) {
+  const enemyCard = document.querySelector('.enemy-card')
+  enemyCard.classList.remove('none')
+  // renderCharStats(true, enemyStats)
+}
 
 class Character {
   constructor({ maxHp, hp, name, str, agil, acc }) {
@@ -158,7 +160,6 @@ let enemyChar
 
 function setCharacters() {
   setHeroStats()
-  // setEnemyStats()
 }
 
 function setHeroStats() {
@@ -169,7 +170,6 @@ function setHeroStats() {
 }
 
 function renderStats(charClass, charInfo) {
-  const char = document.querySelector(`.${charClass} .stats`)
   const charStats = [
     {
       value: charInfo.str,
@@ -184,6 +184,7 @@ function renderStats(charClass, charInfo) {
       title: 'Accuracy'
     },
   ]
+  const char = document.querySelector(`.${charClass} .stats`)
   charStats.forEach(stat => {
     const statBlock = document.createElement('div')
     statBlock.innerText = `${stat.title}: ${stat.value}`
@@ -193,6 +194,10 @@ function renderStats(charClass, charInfo) {
 }
 
 setCharacters()
+
+if (heroStats.hp) {
+  renderCharStats(false, heroStats)
+}
 
 const btnHit = document.querySelector('.btn-hit')
 
@@ -230,17 +235,20 @@ function renderDamage(isEnemy) {
   localStorage.setItem(isEnemy ? 'simpleGameEnemyStats' : 'simpleGameHeroStats', JSON.stringify(char))
 }
 
-// function renderChharStats(isEnemy, charInfo) {
-//   console.log('charInfo', charInfo)
-//   const block = isEnemy ? 'enemy' : 'hero'
-//   const agilEl = document.querySelector(`${block} .Agility`)
-//   const strEl = document.querySelector(`${block} .Strength`)
-//   const accEl = document.querySelector(`${block} .Accuracy`)
+function renderCharStats(isEnemy, charInfo) {
+  const block = isEnemy ? '.enemy' : '.hero'
+  const agilEl = document.querySelector(`${block} .Agility`)
+  const strEl = document.querySelector(`${block} .Strength`)
+  const accEl = document.querySelector(`${block} .Accuracy`)
+  const hpEl = document.querySelector(`${block} .hp-lvl`)
+  const hpLine = document.querySelector(`${block} .hp`)
 
-//   agilEl?.innerHTML = charInfo?.agil
-//   strEl?.innerHTML = charInfo?.str
-//   accEl?.innerHTML = charInfo?.acc
-// }
+  agilEl.innerHTML = `$Agility: ${charInfo?.agil}` 
+  strEl.innerHTML = `$Strength: ${charInfo?.str}`
+  accEl.innerHTML = `$Accuracy: ${charInfo?.acc}`
+  hpEl.innerHTML = `${charInfo.hp}/${charInfo.maxHp}`
+  hpLine.style.width = `${(charInfo.hp / charInfo.maxHp) * 100}%`
+}
 
 function getRandom(a, b) {
   return Math.floor(a + Math.random() * (b - a + 1))
